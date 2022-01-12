@@ -1,2 +1,2 @@
 # node-todo
-a little todo app on nodejs
+a little todo app for traning
