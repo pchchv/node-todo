@@ -9,19 +9,16 @@ let todoSchema = new mongooose.Schema({
     item: String
 });
 let Todo = mongooose.model('Todo', todoSchema);
-let itemOne = Todo({item: 'buy flowers'}).save((err) => {
-    if (err) {
-        console.log(err)
-    };
-    console.log('item saved')
-});
 
-let data = [{item: 'get milk'}, {item: 'get bread'}, {item: 'walk dog'}];
 let urlencodeParser = bodyParser.urlencoded({extended: false});
 
 module.exports = (app) => {
     app.get('/todo', (req, res) => {
-        res.render('todo', {todos: data});
+        //get data from db and pass it to view
+        Todo.find({}, (err, data) => {
+            if (err) console.log(err);
+            res.render('todo', {todos: data});
+        });
     });
     app.post('/todo', urlencodeParser, (req, res) => {
         data.push(req.body);
