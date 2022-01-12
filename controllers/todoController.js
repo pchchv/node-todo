@@ -31,9 +31,10 @@ module.exports = (app) => {
         });
     });
     app.delete('/todo/:item', (req, res) => {
-        data = data.filter((todo) => {
-            return todo.item.replace(' ', '-') !== req.params.item;
-        });
-        res.json(data);
+        //delete the requested data from db
+        Todo.find({item: req.params.item.replace('\-', ' ')}).remove((err, data) => {
+            if (err) console.log(err);
+            res.json(data);
     });
+});
 }
