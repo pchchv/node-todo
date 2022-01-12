@@ -2,7 +2,7 @@ let bodyParser = require('body-parser');
 let mongooose = require('mongoose');
 
 let fs = require('fs');
-let login = fs.readFileSync('loginDb.txt', 'utf8').split(':');
+let login = fs.readFileSync('login.txt', 'utf8').split(':');
 
 //Connect to database
 mongooose.connect(`mongodb://${login[0]}:${login[1]}@cluster0.6ruxv.mongodb.net/todo`);
@@ -24,8 +24,11 @@ module.exports = (app) => {
         });
     });
     app.post('/todo', urlencodeParser, (req, res) => {
-        data.push(req.body);
-        res.json({todos:data});
+        //get data from the view and add it to db
+        let newTodo = Todo(req.body).save((err, data) => {
+            if (err) console.log(err);
+            res.json(data);
+        });
     });
     app.delete('/todo/:item', (req, res) => {
         data = data.filter((todo) => {
