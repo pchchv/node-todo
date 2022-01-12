@@ -1,8 +1,11 @@
 let bodyParser = require('body-parser');
 let mongooose = require('mongoose');
 
+let fs = require('fs');
+let login = fs.readFileSync('loginDb.txt', 'utf8').split(':');
+
 //Connect to database
-mongooose.connect('mongodb://<login>:<pass>@cluster0.6ruxv.mongodb.net/todo');
+mongooose.connect(`mongodb://${login[0]}:${login[1]}@cluster0.6ruxv.mongodb.net/todo`);
 
 //Create a schema - this is like a blueprint
 let todoSchema = new mongooose.Schema({
